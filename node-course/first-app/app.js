@@ -1,9 +1,12 @@
 //using events
 const EventEmitter = require('events');
-const emitter = new EventEmitter();
+const Logger = require('./logger');
 
-emitter.on('messageLogged', (arg)=> {
+const logger = new Logger();
+
+logger.on('messageLogged', (arg)=> {
     console.log('Listener called ',arg )
 })
 
-emitter.emit('messageLogged',{id:1, name: 'Gagan'});
+
+logger.log('Hello from app.js')

@@ -1,13 +1,14 @@
-function log(message){
-    console.log(message);
+const EventEmitter = require('events');
+
+
+class Logger extends EventEmitter
+{
+    log(message){
+        console.log(message);
+    
+        this.emit('messageLogged',{id:1, name: 'Gagan'});
+    }
 }
+ 
 
-module.exports = log;
-//module.exports.someName = functionName
-
-/*
-    module.exports = log -> exports only the function. 
-        can be accessed directly with function name
-    module.exports.log = log -> exports an object
-        should be accessed with objectName.functionName
-*/
+module.exports = Logger;

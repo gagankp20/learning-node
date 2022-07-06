@@ -1,6 +1,9 @@
-const logger = require('./logger');
-logger.log('Message');
+//using events
+const EventEmitter = require('events');
+const emitter = new EventEmitter();
 
-//jshint node app.js -> tool used to show error. 
+emitter.on('messageLogged', ()=> {
+    console.log('Listener called')
+})
 
-
+emitter.emit('messageLogged');

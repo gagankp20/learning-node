@@ -32,7 +32,7 @@ app.get('/api/courses/:id', (req, res) =>{
 })
 
 app.post('/api/courses', (req, res) =>{
-    const {errpr} = validateCourse(req.body)             // result followed by result.error = {error}
+    const {error} = validateCourse(req.body)             // result followed by result.error = {error}
     if(result.error)
        return res.status(400).send(result.error.details[0].message);
 

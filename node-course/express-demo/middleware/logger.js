@@ -1,5 +1,5 @@
 function log(req, res, next) {
-    console.log('logging')
+    console.log('logging middleware function')
     next()
 }
 

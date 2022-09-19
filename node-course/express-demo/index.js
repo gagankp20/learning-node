@@ -1,9 +1,24 @@
+const helmet = require('helmet')
+const morgan = require('morgan')
 const Joi = require('joi');
+const logger = require('./logger')
 const express = require('express');
-const { valid } = require('joi/lib/types/lazy');
+const debug = require('debug')('app:startup');
 const  app = express();
 
+app.use(helmet())
 app.use(express.json());
+app.use(express.urlencoded({extended: true}))
+app.use(express.static("public"))
+
+
+if(app.get('env') === 'development'){
+    app.use(morgan('tiny'))
+    debug('Morgan enabled')
+}
+
+
+app.use(logger)
 
 const courses = [
     {id:1, name: 'course1'},

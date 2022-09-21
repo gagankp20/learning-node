@@ -1,45 +1,33 @@
-/*CALL BACK HELL
-console.log('before');
-getUser(1, (user) => {
-console.log('users', user)
-    getRepositories(user.githubUserName, (repos) => {
-        console.log(user.githubUserName, repos)
-        getCommits(repos, commits => {
-                
-        });
+// console.log('before');
+// getUser(1, (user) => {
+//     getRepositories(user.githubUserName, (repos) => {
+//      getCommits(repos, (commits) => {
+
+//              });
         
-    });
+        
+//     });
+// });
+// console.log('after')
 
-});
-
-*/
-
+console.log('before');
+getUser(1, getRepositories);
+console.log('after')
 
 //NAMED FUNCTIONS
-function displayCommits(commits){
-    console.log(commits);
-}
-
-getUser(1,getRepositories);
-
-
 function getRepositories(user){
-    console.log('users', user)
     getRepositories(user.githubUserName, getCommits)
 }
 
 function getCommits(repos){
-    console.log(user.githubUserName, repos)
-        getCommits(repos, displayCommits);
+    getCommits(repos, displayCommits);
 }
 
 function displayCommits(commits){
     console.log(commits);
 }
+//end named function
 
-
-
-console.log('after');
 
  function getUser(id, callback){
     setTimeout(() =>{
@@ -53,10 +41,15 @@ console.log('after');
     setTimeout(() => {
         console.log('repo list');
         callback(['repo1', 'repo2', 'repo3']);
-    },1000)
+    },2000);
+}
+
+function getCommits(repos, callback){
+    setTimeout(() => {
+        console.log('calling github api');
+        callback(['commit']);
+    }, 2000);
  }
 
- function getCommits(repo, callback)
- {
-    callback('abc');
- }
+ displayCommits('first')
+

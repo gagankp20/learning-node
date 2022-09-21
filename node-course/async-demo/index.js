@@ -1,15 +1,43 @@
+/*CALL BACK HELL
 console.log('before');
 getUser(1, (user) => {
 console.log('users', user)
     getRepositories(user.githubUserName, (repos) => {
         console.log(user.githubUserName, repos)
-        getCommits(repos[0], commits => {
-                //CALLBACK HELL
+        getCommits(repos, commits => {
+                
         });
         
     });
 
 });
+
+*/
+
+
+//NAMED FUNCTIONS
+function displayCommits(commits){
+    console.log(commits);
+}
+
+getUser(1,getRepositories);
+
+
+function getRepositories(user){
+    console.log('users', user)
+    getRepositories(user.githubUserName, getCommits)
+}
+
+function getCommits(repos){
+    console.log(user.githubUserName, repos)
+        getCommits(repos, displayCommits);
+}
+
+function displayCommits(commits){
+    console.log(commits);
+}
+
+
 
 console.log('after');
 

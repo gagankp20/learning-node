@@ -1,10 +1,14 @@
 console.log('before');
 getUser(1, (user) => {
-    console.log("user",user);
-
+console.log('users', user)
     getRepositories(user.githubUserName, (repos) => {
-        console.log('repos',repos);
+        console.log(user.githubUserName, repos)
+        getCommits(repos[0], commits => {
+                //CALLBACK HELL
+        });
+        
     });
+
 });
 
 console.log('after');
@@ -22,4 +26,9 @@ console.log('after');
         console.log('repo list');
         callback(['repo1', 'repo2', 'repo3']);
     },1000)
+ }
+
+ function getCommits(repo, callback)
+ {
+    callback('abc');
  }

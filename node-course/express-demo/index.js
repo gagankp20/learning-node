@@ -1,7 +1,7 @@
 const helmet = require('helmet')
 const morgan = require('morgan')
 const Joi = require('joi');
-const logger = require('./logger')
+const logger = require('./middleware/logger')
 const express = require('express');
 const debug = require('debug')('app:startup');
 const  app = express();
@@ -11,6 +11,7 @@ const homepage = require('./routes/home')
 app.set('view engine', 'pug')
 app.set('views', './views')
 
+//middleware
 app.use(logger)
 app.use(helmet())
 app.use(express.json());

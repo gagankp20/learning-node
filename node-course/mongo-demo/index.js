@@ -4,12 +4,47 @@ mongoose.connect('mongodb://localhost/playground')
     .then(()=> console.log('connected to mongodb'))
     .catch(err => console.error('Could not connect to mongoDB ', err));
 
-const courseSchema = mongoose.Schema({
-    name: String,
+const courseSchema = mongoose.Schema({  
+    name: {type:String, 
+        required: true,
+        minlength: 1,
+        maxlength: 255,
+    },
+    category: {
+        type: String,
+        required: true,
+        enum: ['web', 'mobile', 'network'],
+        lowercase: true,
+        //uppercase: true,
+
+    },
     author: String,
-    tags: [ String ],
+    tags: {
+        type: Array,
+        validate: {
+            isAsync: true,
+            validator: function(v, callback){
+                setTimeout(() => {
+                    const result = v && v.length >0; 
+                    callback(result)
+                }, 1)
+
+                
+            },
+            message: 'Course should have at least 1 tag'
+        }
+    },
     date: {type : Date , default: Date.now},
-    isPublished : Boolean
+    isPublished : Boolean,
+    price: {
+        type: Number, 
+        required: function(){ return this.isPublished;},
+        min: 10,
+        max: 200,
+        get : v => Math.round(v),
+        set : v => Math.round(v)
+
+    }
 });
 
 const Course = mongoose.model('Course', courseSchema);
@@ -18,13 +53,25 @@ const Course = mongoose.model('Course', courseSchema);
 async function createCourse() {
     const course = new Course({
         name: 'angular Course',
+        category:'WEB',
         author: 'Mosh',
-        tags: ['angular', 'frontend'],
-        isPublished: true
+        tags: ['Frontend'],
+        isPublished: true, 
+        price: 15.8
     });
-    
-    const result = await course.save();
-    console.log(result);
+ 
+    try{
+        // course.validate((err) => {           inbuilt validator
+        //     if(err) {}
+        // });
+        const result = await course.save();
+        console.log(result);
+    }
+    catch(ex){
+        for(field in ex.errors)
+        console.log(ex.errors[field].message);
+    }
+
 }
 
 async function getCourses() {
@@ -69,14 +116,14 @@ const result = await Course.findByIdAndUpdate(id, {
 console.log(result)
 }
 
-async function deleteCourse(id){
+async function removeCourse(id){
     //const result = await Course.deleteMany({_id : id})
     const course = await Course.findByIdAndDelete(id);
     console.log(course);
 }
 
 
-//creteCourse()
+createCourse()
 //getCourse()
 //updateCourse('63348d5f6376594708cb349e');
-deleteCourse('63348d5f6376594708cb349e')
+//removeCourse('63348d5f6376594708cb349e')
